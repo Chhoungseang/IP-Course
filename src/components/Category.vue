@@ -5,7 +5,6 @@ export default {
         quantity: Number, 
         label: String,
         bgColor: String,
-        radiusColor: String,
     }
 }
 </script>
@@ -47,7 +46,6 @@ export default {
     width: 136px;
     height: 185px;
     border-radius: 10px;
-    border: 1px solid v-bind(radiusColor);
     margin: 10px;
   }
 

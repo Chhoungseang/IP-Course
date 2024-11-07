@@ -9,8 +9,12 @@ export default {
         imgSrc: String,
         label: String,
         bgColor: String,
-        radiusColor: String,
         buttonColor: String,
+    },
+    methods: {
+      shopnow(promotion){
+        alert ("Let's shop: "+promotion);
+      }
     }
 }
 </script>
@@ -22,12 +26,13 @@ export default {
             {{ label }}
       </div>
       <div class="button">
-              <ShopButton :bgColor="buttonColor"/>
+              <ShopButton @click="shopnow(label)" :bgColor="buttonColor"/>
       </div>
     </div>
     <img :src="imgSrc" alt="">
   </div>
 </template>
+
 
 <style scoped>
   /* Quicksand font */
@@ -48,7 +53,6 @@ export default {
     width: 512px;
     height: 300px;
     border-radius: 10px;
-    border: 1px solid v-bind(radiusColor);
     margin: 8px;
   }
 

@@ -113,7 +113,7 @@ export default {
           label: 'The Best Organic Products Online',
           imgSrc: './src/assets/image/Veggie.jpg',
           bgColor: '#E7EAF3',
-          buttonColor: '#FDC040',
+          buttonColor: '#3BB77E',
         },
       ]
     }
