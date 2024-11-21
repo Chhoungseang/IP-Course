@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <template v-for="item in items" key="item">
+      <template v-for="item in categories" key="item">
         <CategoryComponent :label="item.name" 
         :imgSrc="item.image" 
         :quantity="item.productCount"
@@ -21,9 +21,17 @@
 <script >
 import axios from 'axios';
 import CategoryComponent from './components/Category.vue';
-import PromotionComponent from './components/Product.vue';
+import PromotionComponent from './components/Promotion.vue';
+import { useProductStore } from './stores/product.js';
+import { mapState } from 'pinia';
 
 export default {
+  setup() {
+  const store = useProductStore()
+  return {
+  store
+  }
+  },
   components: {
     CategoryComponent,
     PromotionComponent
@@ -32,27 +40,50 @@ export default {
     getQuantity() {
       return Math.floor(Math.random() * 100)
     },
-    fetchCategories(){
-      axios.get('http://127.0.0.1:3000/api/categories').then(result => {
-        this.items = result.data;
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-    },
-    fetchPromotion(){
-      axios.get('http://127.0.0.1:3000/api/promotions').then(result => {
-        this.promotions = result.data;
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-    }
+    // fetchCategories(){
+    //   axios.get('http://127.0.0.1:3000/api/categories').then(result => {
+    //     this.items = result.data;
+    // })
+    // .catch(error => {
+    //   console.error('Error fetching data:', error);
+    // });
+    // },
+    // fetchPromotion(){
+    //   axios.get('http://127.0.0.1:3000/api/promotions').then(result => {
+    //     this.promotions = result.data;
+    // })
+    // .catch(error => {
+    //   console.error('Error fetching data:', error);
+    // });
+    // },
   },
-  mounted() {
-    this.fetchCategories();
-    this.fetchPromotion();
+  computed: {
+    ...mapState(useProductStore, {
+      categories: "categories",
+      promotions: "promotions",
+      products: "products",
+      groups: "groups",
+
+      categories(store) {
+        return store.getCategoriesByGroup(this.currentGroupName)
+      },
+      
+      popularProducts(store) {
+        return store.getPopularProducts()
+      },
+
+      productByGroup(store) {
+        return store.getProductsByGroup(this.currentGroupName)
+
+      }
+    }),
   },
+  async mounted() {
+    await this.store.fetchCategories()
+    await this.store.fetchPromotions()
+    await this.store.fetchProducts()
+    await this.store.fetchGroups()
+  }, 
   data() {
     return {
       items: [
@@ -117,26 +148,27 @@ export default {
         //   bgColor: '#FFF3FF',
         // },
       ],
-      promotions: [
-        // {
-        //   label: 'Everyday Fresh & Clean with Our Products',
-        //   imgSrc: './src/assets/image/Onion.jpg',
-        //   bgColor: '#F0E8D5',
-        //   buttonColor: '#3BB77E',
-        // },
-        // {
-        //   label: 'Make your Breakfast Healthy and Easy',
-        //   imgSrc: './src/assets/image/Milk.png',
-        //   bgColor: '#F3E8E8',
-        //   buttonColor: '#3BB77E',
-        // },
-        // {
-        //   label: 'The Best Organic Products Online',
-        //   imgSrc: './src/assets/image/Veggie.jpg',
-        //   bgColor: '#E7EAF3',
-        //   buttonColor: '#3BB77E',
-        // },
-      ]
+      // promotions: [
+      //   // {
+      //   //   label: 'Everyday Fresh & Clean with Our Products',
+      //   //   imgSrc: './src/assets/image/Onion.jpg',
+      //   //   bgColor: '#F0E8D5',
+      //   //   buttonColor: '#3BB77E',
+      //   // },
+      //   // {
+      //   //   label: 'Make your Breakfast Healthy and Easy',
+      //   //   imgSrc: './src/assets/image/Milk.png',
+      //   //   bgColor: '#F3E8E8',
+      //   //   buttonColor: '#3BB77E',
+      //   // },
+      //   // {
+      //   //   label: 'The Best Organic Products Online',
+      //   //   imgSrc: './src/assets/image/Veggie.jpg',
+      //   //   bgColor: '#E7EAF3',
+      //   //   buttonColor: '#3BB77E',
+      //   // },
+      // ],
+      currentGroupName: "Vegetables"
     }
   }
 }
