@@ -1,20 +1,26 @@
 <template>
+    <Showcase/>
+
     <Menu
      :title="'Featured Products'"
      :navList="groups"/>
+
    <div class="container">
-       <template v-for="item in categories" key="item">
+       <template v-for="(item, index) in categories" :key="index">
          <CategoryComponent :label="item.name" 
-         :imgSrc="item.image" 
+         :imgSrc="'http://localhost:3000/' + item.image"
          :quantity="item.productCount"
          :bgColor="item.color"
+         @click="goToCategory(item.id)"
          />
        </template>
    </div>
+
+   <br>
  
    <div class="container">
      <template v-for="item in promotions" key="item">
-       <PromotionComponent :label="item.title" :bgColor="item.color" :imgSrc="item.image" :buttonColor="item.buttonColor" :price="item.price"/>
+       <PromotionComponent :label="item.title" :bgColor="item.color" :imgSrc="'http://localhost:3000/' + item.image" :buttonColor="item.buttonColor" :price="item.price"/>
      </template>
    </div>
    
@@ -24,16 +30,19 @@
    :navList="groups"
    @change-nav="changeProductGroup"
    />
+
    <div class="product-list">
      <template v-for="item in products" key="item">
        <Product
+       :productId="item.id"
        :productName="item.name"
-       :imgPath="item.image"
+       :imgPath="'http://localhost:3000/' + parseImages(item.image)[0]"
        :rating="item.rating"
        :discountPercent="item.promotionAsPercentage"
        :price="item.price"
        :countSold="item.countSold"
        :instock="item.instock"
+       @img-clicked="goToProduct(item.id)"
        />
      </template>
    </div>
@@ -46,6 +55,7 @@
  import PromotionComponent from '@/components/Promotion.vue';
  import Product from '@/components/Product.vue';
  import Menu from '@/components/Menu.vue';
+ import Showcase from '@/components/Showcase.vue';
  import { useProductStore } from '@/stores/product.js';
  import { mapState } from 'pinia';
  
@@ -60,7 +70,8 @@
      CategoryComponent,
      PromotionComponent,
      Product,
-     Menu
+     Menu,
+     Showcase
    },
    methods: {
      getQuantity() {
@@ -69,6 +80,15 @@
      changeProductGroup(nav) {
        this.store.currProductGroup = nav
      },
+     goToCategory(id) {
+        this.$router.push(`/categories/${id}`);
+      },
+      goToProduct(id) {
+        this.$router.push(`/products/${id}`);
+      },
+      parseImages(image) {
+        return JSON.parse(image);
+      },
    },
    computed: {
      ...mapState(useProductStore, {
@@ -101,7 +121,13 @@
      await this.store.fetchPromotions()
      await this.store.fetchProducts()
      await this.store.fetchGroups()
-   }, 
+   },
+   async mounted() {
+      await this.store.fetchCategories()
+      await this.store.fetchPromotions()  
+      await this.store.fetchProducts()
+      await this.store.fetchGroups()
+    }, 
    data() {
      return {
        currentGroupName: "Vegetables",

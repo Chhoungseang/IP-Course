@@ -5,6 +5,7 @@ export const useProductStore = defineStore('product', {
          groups: [],
          promotions: [],
          categories: [],
+         countProductAdded: {},
          products: []
     }),
     getters: {
@@ -21,6 +22,12 @@ export const useProductStore = defineStore('product', {
           const countPopular = 10;
           const popular = () => this.products.find((product) => product.countSold > countPopular)
           return popular
+     },
+     getCategoryById() {
+          return (id) => this.categories.filter((categegory) => categegory.id === id)
+     },
+     getProductById() {
+          return (id) => this.products.filter((product) => product.id === id)
      },
     },
     actions: {
