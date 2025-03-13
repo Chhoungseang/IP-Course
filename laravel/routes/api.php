@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\CategoryController;
+use \App\Http\Controllers\ProductController;
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
+
+Route::controller(CategoryController::class)->prefix('categories')->group(function() {
+    Route::get('/', 'getCategories');
+    Route::post('/', 'createCategory');
+    Route::get('/{categoryId}', 'getCategory');
+    Route::patch('/{categoryId}', 'upadateCategory');
+    Route::delete('/{categoryId}', 'deleteCategory');
+    Route::get('/{categoryId}/products', 'getProductsByCategory');
+});
+
+Route::controller(ProductController::class)->prefix('products')->group(function() {
+    Route::get('/', 'getProducts');
+    Route::post('/', 'createProducts');
+    Route::get('/{productId}', 'getProduct');
+    Route::patch('/{productId}', 'upadateProduct');
+    Route::delete('/{productId}', 'deleteProduct');
+});
