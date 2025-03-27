@@ -13,14 +13,14 @@ Route::controller(CategoryController::class)->prefix('categories')->group(functi
     Route::get('/', 'getCategories');
     Route::post('/', 'createCategory');
     Route::get('/{categoryId}', 'getCategory');
-    Route::patch('/{categoryId}', 'upadateCategory');
+    Route::patch('/{categoryId}', 'updateCategory');
     Route::delete('/{categoryId}', 'deleteCategory');
     Route::get('/{categoryId}/products', 'getProductsByCategory');
 });
 
 Route::controller(ProductController::class)->prefix('products')->group(function() {
     Route::get('/', 'getProducts');
-    Route::post('/', 'createProducts');
+    Route::post('/', 'createProduct');
     Route::get('/{productId}', 'getProduct');
     Route::patch('/{productId}', 'upadateProduct');
     Route::delete('/{productId}', 'deleteProduct');

@@ -28,5 +28,10 @@ class ProductSeeder extends Seeder
             'category_id' => 3,
             'pricing' => 40,
         ]);
+        Product::create([
+            'name' => "Chestnut",
+            'category_id' => 1,
+            'pricing' => 40,
+        ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -15,23 +16,18 @@ class CategoryController extends Controller
         return Category::find($categoryId);
     }
 
-    public function createCategory() {
+    public function createCategory(Request $request) {
         $id = Category::count() + 1;
-        date_default_timezone_set("Asia/Phnom_Penh");
-        $when = date("d/m/Y h:i:sa");
         $category = Category::create([
-            "name" => "New Category $id $when",
+            "name" => $request->get('name'),
         ]);
         $category->save();
         return $category;
     }
 
-    public function updateCategory($categoryId) {
+    public function updateCategory(Request $request, $categoryId) {
         $category = Category::find($categoryId);
-        date_default_timezone_set("Asia/Phnom_Penh");
-        $when = date("d/m/Y h:i:sa");
-        $category->name = "Category $categoryId updated on $when";
-        $category->save();
+        $category->Category::update($request->all());
 
         return $category;
     }

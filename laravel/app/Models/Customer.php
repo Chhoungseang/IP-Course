@@ -5,15 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+class Customer extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = ['name', 'pricing', 'category_id'];
-
-    public function category() {
-        return $this->belongsTo(Category::class);
-    }
+    protected $fillable = ['name', 'email', 'address', 'phone'];
 
     public function wishlists() {
         return $this->hasMany(Wishlist::class);
@@ -23,7 +19,11 @@ class Product extends Model
         return $this->hasMany(Cart::class);
     }
 
-    public function order_products() {
-        return $this->hasMany(OrderProduct::class);
+    public function orders() {
+        return $this->hasMany(Order::class);
+    }
+
+    public function payments() {
+        return $this->hasMany(Payment::class);
     }
 }
