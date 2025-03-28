@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('payment_method', 100);
             $table->decimal('amount', 10, 2);
             $table->bigInteger('order_id')->unsigned();
-            $table->bigInteger('product_id')->unsigned();
-            $table->timestamp('payent_date');
+            $table->bigInteger('customer_id')->unsigned();
+            $table->timestamp('payment_date');
             $table->foreign('order_id')->references('id')->on('orders');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('customer_id')->references('id')->on('products');
             $table->timestamps();
         });
     }

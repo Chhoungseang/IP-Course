@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('model_id')->nullable();
             $table->string('action');
             $table->json('changes')->nullable();
-            $table->timestamp('create_at')->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
