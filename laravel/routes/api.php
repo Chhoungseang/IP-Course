@@ -22,6 +22,6 @@ Route::controller(ProductController::class)->prefix('products')->group(function(
     Route::get('/', 'getProducts');
     Route::post('/', 'createProduct');
     Route::get('/{productId}', 'getProduct');
-    Route::patch('/{productId}', 'upadateProduct');
+    Route::patch('/{productId}', 'updateProduct');
     Route::delete('/{productId}', 'deleteProduct');
 });
