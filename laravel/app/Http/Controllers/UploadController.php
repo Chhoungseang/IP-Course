@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
@@ -30,13 +31,23 @@ class UploadController extends Controller
         $fileName = uniqid() . '.' . $image->getClientOriginalExtension();
 
         $path = $image->storeAs('uploads', $fileName);
+        
+        $Newpath = Storage::disk("minio") -> putFileAs('uploads', $image, $fileName);
 
         $thumbnailPath = 'thumbnails/' . $fileName;
+
         $intervention = Image::make($image->getRealPath());
         $intervention->fit(200, 200, function ($constraint) {
         $constraint->aspectRatio();
         })->save(storage_path('app/public/' . $thumbnailPath));
 
-        return response()->json(['path' => $path], 200);
+        $thumbnailFullPath = storage_path('app/public/' . $thumbnailPath);
+
+        $NewThumb = Storage::disk('minio')->put('thumbnails/' . $fileName, file_get_contents($thumbnailFullPath));
+
+        return response()->json(['path' => $path,
+        'thumbnail' => $thumbnailPath,
+        ]
+        , 200);
     }
 }

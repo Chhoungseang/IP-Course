@@ -62,7 +62,6 @@ return [
 
         'minio' => [
             'driver' => 's3',
-            // 'host' => env('MINIO_HOST', '127.0.0.1'),
             'key' => env('MINIO_ACCESS_KEY_ID'),
             'secret' => env('MINIO_SECRET_ACCESS_KEY'),
             'region' => env('MINIO_REGION', 'us-east-1'),
