@@ -7,6 +7,8 @@ import {
   Patch,
   Delete,
   ParseIntPipe,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { createUserDto } from './dto/create-user.dto';
@@ -26,11 +28,12 @@ export class UsersController {
   }
 
   @Get('/:id')
-  getById(id:number){
+  getById(@Param('id') id:number){
     return this.userService.getUser(id);
   }
 
   @Post('/')
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   createUser(@Body() body: createUserDto) {
     return this.userService.createUser(body);
   }

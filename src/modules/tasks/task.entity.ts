@@ -21,7 +21,7 @@ export class Task {
   completedAt: Date | null;
 
   @DeleteDateColumn()
-  deletedAt?: Date; // Will be set when soft deleted
+  deletedAt?: Date;
 
   @ManyToOne(() => User, user => user.tasks, { onDelete: 'CASCADE' })
   user: User;
